@@ -91,11 +91,12 @@ const restart = () =>{
     partialPlayerTwoValue = 0;
     turn = 2;
     scoreboard = [];
+    rounds = 1;
 };
 
 const newRund = () =>{
     rounds = rounds + 1;
-    console.log(scoreboard);
+    // console.log(scoreboard);
     socrePlayerOne.innerText = "";
     socrePlayerTwo.innerText = "";
     hndButtonRestart.disabled = false;
@@ -116,9 +117,9 @@ const partialResult = (valueOne, valueTwo) =>{
                 hndButtonRestart.disabled = true;
                 hndButtonPlayerTwo.disabled = true;
                 hndButtonPlayerOne.disabled = true;
-                winer = 2
+                winer = 1
                 setTimeout(()=>{
-                    alert(`Jogador 2 venceu a rodada ${rounds}`);
+                    alert(`Jogador 1 venceu a rodada ${rounds}`);
                         if(rounds == 10){
                             finalResult();
                         }else{
@@ -167,7 +168,9 @@ const partialResult = (valueOne, valueTwo) =>{
         // objeto que define os dados da rodada no array do resultado final
         const roudStats = {
             round:rounds,
-            winer: winer
+            winer: winer,
+            side_player_one:partialPlayerOneValue,
+            side_player_two:partialPlayerTwoValue
         };
         // mandando o objeto para dentro do array
         scoreboard.push(roudStats);
