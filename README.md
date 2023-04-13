@@ -5,7 +5,7 @@
 
 ## Desafio
 
-[X] - Faça uma página que tenha 3 botões: Jogar Dado 1 (corresponde ao primeiro jogador), Jogar Dado 2 (corresponde ao segundo jogador) e reiniciar jogo.
+[ ] - Faça uma página que tenha 3 botões: Jogar Dado 1 (corresponde ao primeiro jogador), Jogar Dado 2 (corresponde ao segundo jogador) e reiniciar jogo.
 
 [ ] - O seu código JS precisa gerenciar a ordem que os jogadores podem Jogar o Dado, primeiro o jogar 1 pode clicar no botão, depois o jogador 2, volta a vez para o jogador 1, e assim por diante.
 
