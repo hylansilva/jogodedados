@@ -10,39 +10,65 @@ let winer;
 // Buscando o elemento body do html-
 const body = document.getElementsByTagName("body");
 
+// criando uma div para organizar os elementos
+const game = document.createElement("div");
+game.classList = "game"
+document.body.appendChild(game)
+
 // criando a div principal do jogo que mostra os dados
 const main = document.createElement("div");
 main.className = "pronpt";
-document.body.appendChild(main);
+game.appendChild(main)
+
+// criando uma div para armazenar a tabela com os resultados
+const divTable = document.createElement("div");
+document.body.appendChild(divTable);
+
+// criando a tabela de resultados
+const resultTable = document.createElement("table");
+const resultaTableHead = document.createElement("thead");
+const resultaTableBody = document.createElement("tbody");
+const resultaTableHeadTr = document.createElement("tr");
+divTable.appendChild(resultTable);
+resultTable.appendChild(resultaTableHead);
+resultTable.appendChild(resultaTableBody);
+resultaTableHead.appendChild(resultaTableHeadTr)
+resultaTableBody.appendChild(resultaTableHeadTr)
+
 
 // criando os lados dos dois dados 
 // lado 1
 const outputPlayerOne = document.createElement("div");
 const socrePlayerOne = document.createElement("p");
-socrePlayerOne.innerText = "";
+socrePlayerOne.innerHTML = "0";
 outputPlayerOne.className = "player-one";
 main.appendChild(outputPlayerOne);
+socrePlayerOne.className = "sort-text"
 // lado 2
 const outputPlayerTwo = document.createElement("div");
 const socrePlayerTwo = document.createElement("p");
-socrePlayerTwo.innerText = "";
+socrePlayerTwo.innerHTML = "0";
 outputPlayerTwo.className = "player-two";
 main.appendChild(outputPlayerTwo);
+socrePlayerTwo.className = "sort-text"
 
 // criando os botões do jogo
 // botão do player 1
 const hndButtonPlayerOne = document.createElement("button");
 hndButtonPlayerOne.innerText = "Jogador 1";
+hndButtonPlayerOne.className = "button"
 
 
 // botão de reiniciar
 const hndButtonRestart = document.createElement("button");
 hndButtonRestart.innerText = "Reinicar o Jogo";
+hndButtonRestart.className = "button"
 
 
 // botão do player 2
 const hndButtonPlayerTwo = document.createElement("button");
 hndButtonPlayerTwo.innerText = "Jogador 2";
+hndButtonPlayerTwo.className = "button"
 
 // criando a div que adiciona os botões em um unico form
 const control = document.createElement("div");
@@ -51,6 +77,7 @@ control.appendChild(hndButtonPlayerOne);
 control.appendChild(hndButtonRestart);
 control.appendChild(hndButtonPlayerTwo);
 document.body.appendChild(control);
+game.appendChild(control)
 
 // desabilitando os botões de player 2 e restart
 hndButtonPlayerTwo.disabled = true;
@@ -82,8 +109,8 @@ const sortDieTwo = () =>{
 
 // função de reiniciar o jogo
 const restart = () =>{
-    socrePlayerOne.innerText = "";
-    socrePlayerTwo.innerText = "";
+    socrePlayerOne.innerText = "0";
+    socrePlayerTwo.innerText = "0";
     hndButtonRestart.disabled = true;
     hndButtonPlayerTwo.disabled = true;
     hndButtonPlayerOne.disabled = false;
@@ -97,8 +124,8 @@ const restart = () =>{
 const newRund = () =>{
     rounds = rounds + 1;
     // console.log(scoreboard);
-    socrePlayerOne.innerText = "";
-    socrePlayerTwo.innerText = "";
+    socrePlayerOne.innerText = "0";
+    socrePlayerTwo.innerText = "0";
     hndButtonRestart.disabled = false;
     hndButtonPlayerTwo.disabled = true;
     hndButtonPlayerOne.disabled = false;

@@ -1,3 +1,23 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+}
+
+.game { 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 .pronpt{
     display: flex;
     justify-content: center;
@@ -5,18 +25,26 @@
     text-align: center;
 }
 
-.player-one{
-    padding: 5rem;
-}
-
-.player-two{
-    padding: 5rem;
-}
-
-#control{
-    margin-left: 50px;
-}
-
-#control button{
+.button{
+    width: 200px;
+    height: 40px;
+    border-radius:50px;
+    cursor: pointer;
+    border: none;
+    background-color: green;
+    font-size: medium;
+    font-weight: bold;
+    color: white;
     margin: 0 20px;
+}
+
+.button:disabled{
+    cursor: auto;
+    background-color: rgba(0, 255, 0, 0.2);
+    color: rgba(0, 0, 0, 0.2);
+}
+
+.sort-text{
+    font-size: 48px;
+    margin: 5rem;
 }
