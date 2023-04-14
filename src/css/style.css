@@ -48,3 +48,31 @@ body{
     font-size: 48px;
     margin: 5rem;
 }
+
+.divTable{
+    background-color: greenyellow;
+    border-radius: 20px;
+    width: 800px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+table{
+    background-color: white;
+    border-radius: 20px;
+    width: 720px;
+    align-items: center;
+}
+
+thead th{
+    padding-top: 20px;
+    padding-bottom: 10px;
+}
+
+thead tr th, tbody tr td{
+    text-align: center;
+}

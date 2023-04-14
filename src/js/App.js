@@ -22,18 +22,37 @@ game.appendChild(main)
 
 // criando uma div para armazenar a tabela com os resultados
 const divTable = document.createElement("div");
+divTable.className = "divTable"
 document.body.appendChild(divTable);
 
 // criando a tabela de resultados
 const resultTable = document.createElement("table");
-const resultaTableHead = document.createElement("thead");
-const resultaTableBody = document.createElement("tbody");
-const resultaTableHeadTr = document.createElement("tr");
+
+// cabeçalho e corpo da tabela
+const resulTableHead = document.createElement("thead");
+const resulTableBody = document.createElement("tbody");
+
+// coluna do cabeçalho
+const resulTableHeadTr = document.createElement("tr"); // Coluna de Resultado
+
+
+// linhas do cabeçalho
+const resulTableHeadTh = document.createElement("th");
+resulTableHeadTh.innerText = "Resultado";
+const resulTableHeadThWinner = document.createElement("th");
+resulTableHeadThWinner.innerText = "Vencedor";
+const resulTableHeadThTurn = document.createElement("th");
+resulTableHeadThTurn.innerText = "Rodada";
+
+
 divTable.appendChild(resultTable);
-resultTable.appendChild(resultaTableHead);
-resultTable.appendChild(resultaTableBody);
-resultaTableHead.appendChild(resultaTableHeadTr)
-resultaTableBody.appendChild(resultaTableHeadTr)
+resultTable.appendChild(resulTableHead);
+resultTable.appendChild(resulTableBody);
+resulTableHead.appendChild(resulTableHeadTr);
+resulTableHeadTr.appendChild(resulTableHeadTh);
+resulTableHeadTr.appendChild(resulTableHeadThWinner);
+resulTableHeadTr.appendChild(resulTableHeadThTurn);
+
 
 
 // criando os lados dos dois dados 
@@ -83,6 +102,51 @@ game.appendChild(control)
 hndButtonPlayerTwo.disabled = true;
 hndButtonRestart.disabled = true;
 
+// função para criar uma nova linha na tabela a partir do fim do turno
+const newTableLine = (scoreboard) =>{
+    for(let i = 0; i < scoreboard.length; i++){
+
+        const trBody = document.createElement("tr");
+        trBody.setAttribute("id","trBody")
+        const round = document.createTextNode(scoreboard[i].round);
+        const winer = document.createTextNode(scoreboard[i].winer);
+        const side_player_one = document.createTextNode(scoreboard[i].side_player_one);
+        const side_player_two = document.createTextNode(scoreboard[i].side_player_two);
+        let winerRegex;
+        const winerSpan = document.createElement("span");
+        if(winer == 1){
+            winerRegex = "Jogador 1"
+            winerSpan.appendChild(document.createTextNode(winerRegex))
+        }else if( winer == 2){
+            winerRegex = "Jogador 2"
+            winerSpan.appendChild(document.createTextNode(winerRegex))
+        }else if(winer == 0){
+            winerRegex = "Empate"
+            winerSpan.appendChild(document.createTextNode(winerRegex))
+        }
+
+        // criando as linhas da tabela
+        const lineRound = document.createElement("td");
+        const lineWinner = document.createElement("td");
+        const lineResult = document.createElement("td");
+
+        // atribuindo o valor de cada item a tabela
+
+        const resultText = `${side_player_one.textContent} X ${side_player_two.textContent}`;
+        const resultSpan = document.createElement("span");
+        resultSpan.appendChild(document.createTextNode(resultText));
+        lineWinner.appendChild(winerSpan);
+        lineResult.appendChild(resultSpan);
+        lineRound.appendChild(round);
+        
+        trBody.appendChild(lineResult);
+        trBody.appendChild(lineWinner);
+        trBody.appendChild(lineRound);
+        
+        resulTableBody.appendChild(trBody);
+    }
+}
+
 // função de sortear o dado 1
 const sortDieOne = () =>{
     let sort = Math.floor(Math.random()*side)+1;
@@ -119,9 +183,10 @@ const restart = () =>{
     turn = 2;
     scoreboard = [];
     rounds = 1;
+    resulTableBody.innerHTML = ""
 };
 
-const newRund = () =>{
+const newTurn = () =>{
     rounds = rounds + 1;
     // console.log(scoreboard);
     socrePlayerOne.innerText = "0";
@@ -132,6 +197,7 @@ const newRund = () =>{
     partialPlayerOneValue = 0;
     partialPlayerTwoValue = 0;
     turn = 2;
+    newTableLine(scoreboard);
 }
 
 // função que compara os resultados parciais
@@ -150,7 +216,7 @@ const partialResult = (valueOne, valueTwo) =>{
                         if(rounds == 10){
                             finalResult();
                         }else{
-                            newRund();
+                            newTurn();
                         }
                 },700);
                 
@@ -167,7 +233,7 @@ const partialResult = (valueOne, valueTwo) =>{
                         if(rounds == 10){
                             finalResult();
                         }else{
-                            newRund();
+                            newTurn();
                         }
                 },700);
             }
@@ -185,7 +251,7 @@ const partialResult = (valueOne, valueTwo) =>{
                         if(rounds == 10){
                             finalResult();
                         }else{
-                            newRund();
+                            newTurn();
                         }
                 },700);
         }
