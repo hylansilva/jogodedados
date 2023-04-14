@@ -1,6 +1,6 @@
 // definindo as voariaveis do jogo 
 let scoreboard = []; // criando um array para salvar os dados dos jogadores
-let rounds = 1; // criando a quantidade de rounds 
+let rounds = 1; // iniciando a variavel de rodadas
 let turn = 2; // definindo quantos turnos haverão no jogo
 const side = 6; // definindo até qual tamanho deve ser o sorteido dos valores
 let partialPlayerOneValue;
@@ -103,40 +103,36 @@ hndButtonPlayerTwo.disabled = true;
 hndButtonRestart.disabled = true;
 
 // função para criar uma nova linha na tabela a partir do fim do turno
-const newTableLine = (scoreboard) =>{
-    for(let i = 0; i < scoreboard.length; i++){
-
-        const trBody = document.createElement("tr");
-        trBody.setAttribute("id","trBody")
+const newTableLine = (scoreboard) => {
+    resulTableBody.innerHTML = ""; // remove todas as linhas existentes da tabela antes de recriá-las
+    for (let i = 0; i < scoreboard.length; i++) {
         const round = document.createTextNode(scoreboard[i].round);
-        const winer = document.createTextNode(scoreboard[i].winer);
+        const winer = scoreboard[i].winer.toString(); // converter para string
         const side_player_one = document.createTextNode(scoreboard[i].side_player_one);
         const side_player_two = document.createTextNode(scoreboard[i].side_player_two);
         let winerRegex;
-        const winerSpan = document.createElement("span");
-        if(winer == 1){
-            winerRegex = "Jogador 1"
-            winerSpan.appendChild(document.createTextNode(winerRegex))
-        }else if( winer == 2){
-            winerRegex = "Jogador 2"
-            winerSpan.appendChild(document.createTextNode(winerRegex))
-        }else if(winer == 0){
-            winerRegex = "Empate"
-            winerSpan.appendChild(document.createTextNode(winerRegex))
+        
+        if (winer === "1") {
+            winerRegex = document.createTextNode("Jogador 1");
+        } else if (winer === "2") {
+            winerRegex = document.createTextNode("Jogador 2");
+        } else if (winer === "0") {
+            winerRegex = document.createTextNode("Empate");
         }
 
         // criando as linhas da tabela
+        const trBody = document.createElement("tr");
         const lineRound = document.createElement("td");
         const lineWinner = document.createElement("td");
         const lineResult = document.createElement("td");
 
         // atribuindo o valor de cada item a tabela
-
         const resultText = `${side_player_one.textContent} X ${side_player_two.textContent}`;
         const resultSpan = document.createElement("span");
         resultSpan.appendChild(document.createTextNode(resultText));
-        lineWinner.appendChild(winerSpan);
+        
         lineResult.appendChild(resultSpan);
+        lineWinner.appendChild(winerRegex);
         lineRound.appendChild(round);
         
         trBody.appendChild(lineResult);
@@ -146,6 +142,7 @@ const newTableLine = (scoreboard) =>{
         resulTableBody.appendChild(trBody);
     }
 }
+
 
 // função de sortear o dado 1
 const sortDieOne = () =>{
