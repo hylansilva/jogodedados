@@ -9,11 +9,22 @@ let winer;
 
 // Buscando o elemento body do html-
 const body = document.getElementsByTagName("body");
+// criando um titulo
+const title = document.createElement("h1");
+title.className = "title";
+title.innerText = " Jogue os Dados 🎲🎲"
+document.body.appendChild(title);
+
+// criando um div para organizar os elementos sem o titulo
+const frame = document.createElement("div");
+frame.className = "frame";
+document.body.appendChild(frame);
+
 
 // criando uma div para organizar os elementos
 const game = document.createElement("div");
 game.classList = "game";
-document.body.appendChild(game);
+frame.appendChild(game);
 
 // criando a div principal do jogo que mostra os dados
 const main = document.createElement("div");
@@ -23,27 +34,34 @@ game.appendChild(main);
 // criando uma div para armazenar a tabela com os resultados
 const divTable = document.createElement("div");
 divTable.className = "divTable";
-document.body.appendChild(divTable);
+frame.appendChild(divTable);
+
+// create the modal container
+const modalContainer = document.createElement('div');
+modalContainer.classList.add('modal-container');
+
+// create the modal content
+const modalContent = document.createElement('div');
+modalContent.classList.add('modal-content');
+
+// create the title and message elements
+const modalTitle = document.createElement('h2');
+const modalMessage = document.createElement('p');
+
+
+// create the button to close the modal
+const closeButton = document.createElement('button');
+closeButton.classList.add('modal-close');
+closeButton.textContent = 'FECHAR';
+
+// add event listener to close button to remove the modal from the DOM when clicked
+closeButton.addEventListener('click', () => {
+modalContainer.remove();
+});
 
 const showModal = (title, message) => {
-    // create the modal container
-    const modalContainer = document.createElement('div');
-    modalContainer.classList.add('modal-container');
-
-    // create the modal content
-    const modalContent = document.createElement('div');
-    modalContent.classList.add('modal-content');
-
-    // create the title and message elements
-    const modalTitle = document.createElement('h2');
     modalTitle.textContent = title;
-    const modalMessage = document.createElement('p');
     modalMessage.textContent = message;
-
-    // create the button to close the modal
-    const closeButton = document.createElement('button');
-    closeButton.classList.add('modal-close');
-    closeButton.textContent = 'FECHAR';
 
     // add the title, message, and close button to the modal content
     modalContent.appendChild(modalTitle);
@@ -54,12 +72,8 @@ const showModal = (title, message) => {
     modalContainer.appendChild(modalContent);
 
     // add the modal container to the document body
-    document.body.appendChild(modalContainer);
+    frame.appendChild(modalContainer);
 
-    // add event listener to close button to remove the modal from the DOM when clicked
-    closeButton.addEventListener('click', () => {
-    modalContainer.remove();
-    });
 };
 
 // criando a tabela de resultados
@@ -142,7 +156,7 @@ hndButtonRestart.disabled = true;
 // função para criar uma nova linha na tabela a partir do fim do turno
 const newTableLine = (scoreboard) => {
     resulTableBody.innerHTML = ""; // remove todas as linhas existentes da tabela antes de recriá-las
-    for (let i = 0; i < scoreboard.length; i++) {
+    for (let i = 0; i < scoreboard.length+1; i++) {
         const round = document.createTextNode(scoreboard[i].round);
         const winer = scoreboard[i].winer.toString(); // converter para string
         const side_player_one = document.createTextNode(scoreboard[i].side_player_one);
@@ -246,8 +260,9 @@ const partialResult = (valueOne, valueTwo) =>{
                 winer = 1;
                 setTimeout(()=>{
                     showModal('Vitória',`Jogador 1 venceu a rodada ${rounds}`);
+                    
                         if(rounds == 10){
-                            finalResult();
+                            setTimeout(()=>finalResult(), 2000);
                         }else{
                             newTurn();
                         }
@@ -263,8 +278,9 @@ const partialResult = (valueOne, valueTwo) =>{
                 winer = 2;
                 setTimeout(()=>{
                     showModal('Vitória',`Jogador 2 venceu a rodada ${rounds}`);
+                    
                         if(rounds == 10){
-                            finalResult();
+                            setTimeout(()=>finalResult(), 2000);
                         }else{
                             newTurn();
                         }
@@ -280,8 +296,9 @@ const partialResult = (valueOne, valueTwo) =>{
                 winer = 0;
                 setTimeout(()=>{
                     showModal('Empate !',`Ambos venceram a rodada ${rounds}`);
+                    
                         if(rounds == 10){
-                            finalResult();
+                            setTimeout(()=>finalResult(), 2000);
                         }else{
                             newTurn();
                         }
@@ -290,14 +307,14 @@ const partialResult = (valueOne, valueTwo) =>{
         
     };
         // objeto que define os dados da rodada no array do resultado final
-        const roudStats = {
+        const roundStats = {
             round:rounds,
             winer: winer,
             side_player_one:partialPlayerOneValue,
             side_player_two:partialPlayerTwoValue
         };
         // mandando o objeto para dentro do array
-        scoreboard.push(roudStats);
+        scoreboard.push(roundStats);
     };
 };
 // função que compara o resultado total do jogo
@@ -313,8 +330,7 @@ const finalResult = () =>{
             totalScorePlayerTwo++;
         }
     }
-
-  // Declarando o vencedor final
+    // Declarando o vencedor final
     if (totalScorePlayerOne > totalScorePlayerTwo) {
         showModal('Vitória',`Jogador 1 venceu o jogo com ${totalScorePlayerOne} rounds ganhos.`);
     } else if (totalScorePlayerOne < totalScorePlayerTwo) {
@@ -322,7 +338,7 @@ const finalResult = () =>{
     } else {
         showModal('Empate   ',`O jogo terminou em empate com ${totalScorePlayerOne} rounds ganhos para cada jogador.`);
     }
-    restart();
+    setInterval(()=> restart(),1000*5);
 };
 // Atribuindo as funções aos botões
 hndButtonPlayerTwo.onclick = sortDieTwo;

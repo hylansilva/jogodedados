@@ -3,15 +3,25 @@
     padding: 0;
     color: white;
 }
+
 body{
+    background-color: #131720 !important; 
     width: 100vw;
     height: 100vh;
+    
+}
+
+.title{
+    text-align: center;
+    padding: 4rem;
+    
+}
+.frame{
+    background-color: #131720 !important; 
     display: flex;
     flex-direction: column;
     justify-content: center;
-    text-align: center;
     align-items: center;
-    background-color: #131720 !important; 
 }
 
 .game { 
