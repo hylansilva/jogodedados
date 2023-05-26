@@ -7,6 +7,33 @@ let partialPlayerOneValue;
 let partialPlayerTwoValue;
 let winer;
 
+// Verificar se há dados no LocalStorage e iniciar o jogo com valores padrão se não houver
+
+// Função para salvar os dados do jogo no LocalStorage
+const saveGameData = () => {
+  const gameData = {
+    scoreboard,
+    rounds,
+    turn,
+    partialPlayerOneValue,
+    partialPlayerTwoValue,
+  };
+  localStorage.setItem("gameData", JSON.stringify(gameData));
+};
+
+// Função para carregar os dados do jogo do LocalStorage
+const loadGameData = () => {
+  const savedData = localStorage.getItem("gameData");
+  if (savedData) {
+    const gameData = JSON.parse(savedData);
+    scoreboard = gameData.scoreboard;
+    rounds = gameData.rounds;
+    turn = gameData.turn;
+    partialPlayerOneValue = gameData.partialPlayerOneValue;
+    partialPlayerTwoValue = gameData.partialPlayerTwoValue;
+  }
+};
+
 // Buscando o elemento body do html-
 const body = document.getElementsByTagName("body");
 // criando um titulo
@@ -189,6 +216,20 @@ const newTableLine = (scoreboard) => {
   }
 };
 
+if (localStorage.getItem("scoreboard")) {
+  scoreboard = JSON.parse(localStorage.getItem("scoreboard"));
+  rounds = parseInt(localStorage.getItem("rounds"));
+  partialPlayerOneValue = parseInt(
+    localStorage.getItem("partialPlayerOneValue")
+  );
+  partialPlayerTwoValue = parseInt(
+    localStorage.getItem("partialPlayerTwoValue")
+  );
+
+  // Atualizar a tabela de resultados com os dados carregados
+  newTableLine(scoreboard);
+}
+
 // função de sortear o dado 1
 const sortDieOne = () => {
   let sort = Math.floor(Math.random() * side) + 1;
@@ -199,6 +240,7 @@ const sortDieOne = () => {
   hndButtonPlayerTwo.disabled = false;
   partialPlayerOneValue = sort;
   turn--;
+  localStorage.setItem('turn','1');
 };
 
 // função de sortear o dado 2
@@ -210,6 +252,7 @@ const sortDieTwo = () => {
   hndButtonPlayerTwo.disabled = true;
   partialPlayerTwoValue = sort;
   turn--;
+  localStorage.setItem('turn','0');
   partialResult(partialPlayerOneValue, partialPlayerTwoValue);
 };
 
@@ -228,6 +271,11 @@ const restart = () => {
   resulTableBody.innerHTML = "";
 };
 
+if (!scoreboard.length || isNaN(rounds) || isNaN(partialPlayerOneValue) || isNaN(partialPlayerTwoValue)) {
+  restart();
+}
+
+
 const newTurn = () => {
   rounds = rounds + 1;
   // console.log(scoreboard);
@@ -245,7 +293,8 @@ const newTurn = () => {
 // função que compara os resultados parciais
 const partialResult = (valueOne, valueTwo) => {
   // Condição para saber a vitória ou empate
-  if (turn == 0) {
+  const dowlonadedTurn = Number(localStorage.getItem('turn'));
+  if (dowlonadedTurn == 0) {
     if (valueOne > valueTwo) {
       if (rounds < 11) {
         hndButtonRestart.disabled = true;
@@ -338,7 +387,26 @@ const finalResult = () => {
   }
   setInterval(() => restart(), 1000 * 5);
 };
+
+const handleGameUpdate = () => {
+  saveGameData();
+};
+
 // Atribuindo as funções aos botões
-hndButtonPlayerTwo.onclick = sortDieTwo;
-hndButtonPlayerOne.onclick = sortDieOne;
-hndButtonRestart.onclick = restart;
+hndButtonPlayerTwo.onclick = () => {
+  sortDieTwo();
+  handleGameUpdate();
+};
+
+hndButtonPlayerOne.onclick = () => {
+  sortDieOne();
+  handleGameUpdate();
+};
+
+hndButtonRestart.onclick = () => {
+  restart();
+  handleGameUpdate();
+};
+
+loadGameData();
+newTableLine(scoreboard);
